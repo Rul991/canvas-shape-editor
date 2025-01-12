@@ -162,7 +162,7 @@ export default class CanvasShapeEditor extends GameObject {
     createVisibleCounter() {
         this.createCounter({
             name: 'visibleGridCounter',
-            title: 'Видимость сетки',
+            title: `Grid's visibility`,
             object: this.grid,
             key: 'isVisible',
             keyboardButton: 'KeyQ',
@@ -176,7 +176,7 @@ export default class CanvasShapeEditor extends GameObject {
     createPointRadiusCounter() {
         this.createCounter({
             name: 'pointRadiusCounter',
-            title: 'Радиус точки',
+            title: `Point's radius`,
             object: this.grid,
             key: 'pointRadius',
             keyboardButton: 'KeyQ',
@@ -196,7 +196,7 @@ export default class CanvasShapeEditor extends GameObject {
     createColumnCounter() {
         this.createCounter({
             name: 'columnCounter',
-            title: 'Кол-во колонок',
+            title: 'Count of columns',
             object: this.grid,
             key: 'columns',
             callback: value => {
@@ -209,7 +209,7 @@ export default class CanvasShapeEditor extends GameObject {
     createRowCounter() {
         this.createCounter({
             name: 'rowCounter',
-            title: 'Кол-во рядов',
+            title: 'Count of rows',
             object: this.grid,
             key: 'rows',
             callback: value => {
@@ -222,7 +222,7 @@ export default class CanvasShapeEditor extends GameObject {
     createWidthCounter() {
         this.createCounter({
             name: 'widthCounter',
-            title: 'Ширина сетки',
+            title: `Grid's width`,
             object: this.grid,
             key: 'width',
             callback: value => {
@@ -235,7 +235,7 @@ export default class CanvasShapeEditor extends GameObject {
     createHeightCounter() {
         this.createCounter({
             name: 'heightCounter',
-            title: 'Высота сетки',
+            title: `Grid's heightPoint`,
             object: this.grid,
             key: 'height',
             callback: value => {
