@@ -193,6 +193,7 @@ export default class PathCanvas extends GameObject {
             else if(this.clickable.lastEvent.shiftKey) {
                 this.selectPoint(relativePoint)
                 this.deletePoint(relativePoint)
+                this.editedPointIndex = -1
             }
             else {
                 if(this.editedPointIndex == -1) {
