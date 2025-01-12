@@ -235,7 +235,7 @@ export default class CanvasShapeEditor extends GameObject {
     createHeightCounter() {
         this.createCounter({
             name: 'heightCounter',
-            title: `Grid's heightPoint`,
+            title: `Grid's height`,
             object: this.grid,
             key: 'height',
             callback: value => {
