@@ -16,8 +16,29 @@ export default class CanvasShapeEditor extends GameObject {
         
         this.undoHistory = []
         this.redoHistory = []
-        
+
         this.create()
+    }
+
+    static loadInputVariable = document.querySelector('#file-uploader')
+    static isInitialized = false
+
+    get loadInput() {
+        this.loadInputInit()
+        return CanvasShapeEditor.loadInputVariable
+    }
+    
+    loadInputInit() {
+        if(CanvasShapeEditor.isInitialized) return
+
+        CanvasShapeEditor.isInitialized = true
+        CanvasShapeEditor.loadInputVariable.addEventListener('change', e => {
+            const file = CanvasShapeEditor.loadInputVariable.files[0]
+            if(!file) return
+
+            const url = URL.createObjectURL(file)
+            this.path.shape.loadFromJSON(url)
+        })
     }
 
     toggleFill() {
@@ -41,6 +62,10 @@ export default class CanvasShapeEditor extends GameObject {
         let lastCommand = this.redoHistory.pop()
         lastCommand.execute()
         this.undoHistory.push(lastCommand)
+    }
+
+    load() {
+        this.loadInput.click()
     }
 
     reset() {
@@ -265,10 +290,6 @@ export default class CanvasShapeEditor extends GameObject {
                 this.reset()
             }
         })
-
-        this.keyboardManager.addKey('KeyR', e => {
-            this.reset()
-        })
     }
 
     createFillingButton() {
@@ -280,12 +301,7 @@ export default class CanvasShapeEditor extends GameObject {
                 callback: point => {
                     this.toggleFill()
                 }
-            }
-        )
-
-        this.keyboardManager.addKey('KeyF', e => {
-            this.toggleFill()
-        }, {ctrlKey: true, isPreventDefault: true})
+            })
     }
 
     createSaveButton() {
@@ -297,10 +313,6 @@ export default class CanvasShapeEditor extends GameObject {
                 this.downloadJSON()
             }
         })
-
-        this.keyboardManager.addKey('KeyS', e => {
-            this.downloadJSON()
-        }, {ctrlKey: true, isPreventDefault: true})
     }
 
     createCopyButton() {
@@ -312,15 +324,42 @@ export default class CanvasShapeEditor extends GameObject {
                 this.copyJSON()
             }
         })
+    }
 
-        this.keyboardManager.addKey('KeyC', e => {
-            this.copyJSON()
-        }, {ctrlKey: true})
+    createLoadButton() {
+        this.createButton({
+            name: 'loadButton',
+            size: new Point(80, 30),
+            text: 'Load',
+            callback: point => {
+                if(!this.lastPoint) this.lastPoint = point
+                else if(this.lastPoint.x == point.x && this.lastPoint.y == point.y) return
+                else this.lastPoint.point = point
+
+                this.load()
+            }
+        })
     }
 
     createKeyboardEventManager() {
         this.keyboardManager = new KeyboardEventManager()
         this.keyboardManager.addControls()
+
+        this.keyboardManager.addKey('KeyF', e => {
+            this.toggleFill()
+        }, {ctrlKey: true, isPreventDefault: true})
+
+        this.keyboardManager.addKey('KeyS', e => {
+            this.downloadJSON()
+        }, {ctrlKey: true, isPreventDefault: true})
+
+        this.keyboardManager.addKey('KeyC', e => {
+            this.copyJSON()
+        }, {ctrlKey: true})
+
+        this.keyboardManager.addKey('KeyR', e => {
+            this.reset()
+        })
 
         this.keyboardManager.addKey('KeyZ', e => {
             this.undo()
@@ -328,6 +367,10 @@ export default class CanvasShapeEditor extends GameObject {
 
         this.keyboardManager.addKey('KeyY', e => {
             this.redo()
+        }, {ctrlKey: true})
+
+        this.keyboardManager.addKey('KeyO', e => {
+            this.load()
         }, {ctrlKey: true})
     }
 
@@ -355,6 +398,7 @@ export default class CanvasShapeEditor extends GameObject {
         this.createSaveButton()
         this.createCopyButton()
         this.createFillingButton()
+        this.createLoadButton()
         this.setPositionForButtons(new Point(0, -50), this.subObjects.button)
         this.createVisibleCounter()
         this.createPointRadiusCounter()
