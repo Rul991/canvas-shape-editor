@@ -38,11 +38,9 @@ export default class CanvasShapeEditor extends GameObject {
     loadHistory(points) {
         this.resetHistory()
 
-        for (const point of points) {
-            this.undoHistory.push(new AddPointCommand(this.path.shape, point))
+        for (const {x, y} of points) {
+            this.undoHistory.push(new AddPointCommand(this.path.shape, new Point(x, y)))
         }
-
-        this.path.savePoints()
     }
     
     loadInputInit() {
@@ -55,7 +53,10 @@ export default class CanvasShapeEditor extends GameObject {
 
             const url = URL.createObjectURL(file)
             this.path.shape.loadFromJSON(url)
-                .then(() => this.loadHistory(this.path.shape.shapePoints))
+                .then(() => {
+                    this.loadHistory(this.path.shape.shapePoints)
+                    this.path.savePoints()
+                })
         })
     }
 
@@ -65,13 +66,10 @@ export default class CanvasShapeEditor extends GameObject {
     
     undo() {
         if(!this.undoHistory.length) return
-        let global = new Global
 
         let lastCommand = this.undoHistory.pop()
         lastCommand.undo()
         this.redoHistory.push(lastCommand)
-
-        global.set('undoHistory', this.undoHistory)
     }
 
     redo() {
@@ -97,7 +95,6 @@ export default class CanvasShapeEditor extends GameObject {
         }
         this.updateTextForCounters(this.subObjects.counter)
         this.resetHistory()
-        global.set('undoHistory', [])
     }
 
     resetPath(global = new Global) {
@@ -391,7 +388,7 @@ export default class CanvasShapeEditor extends GameObject {
 
         this.keyboardManager.addKey('KeyO', e => {
             this.load()
-        }, {ctrlKey: true})
+        }, {ctrlKey: true, isPreventDefault: true})
     }
 
     createGrid() {

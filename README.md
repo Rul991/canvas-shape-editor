@@ -18,6 +18,7 @@
 
 - `F` -> `Toggle Fill Mode`
 - `Ctrl-S` -> `Save shape as JSON`
+- `Ctrl-O` -> `Load shape from JSON File`
 - `Ctrl-C` -> `Copy shape in clipboard`
 - `R` -> `Reset`
 - `Ctrl-Z` -> `Undo`
