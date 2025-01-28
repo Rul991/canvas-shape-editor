@@ -3,6 +3,7 @@ import KeyboardEventManager from "../rul2d/js/KeyboardEventManager.js"
 import Point from "../rul2d/js/Point.js"
 import Rectangle from "../rul2d/js/Rectangle.js"
 import { hsla } from "../rul2d/js/utils/colorWork.js"
+import AddPointCommand from "./AddPointCommand.js"
 import Button from "./Button.js"
 import Counter from "./Counter.js"
 import Global from "./Global.js"
@@ -18,6 +19,7 @@ export default class CanvasShapeEditor extends GameObject {
         this.redoHistory = []
 
         this.create()
+        this.loadHistory(new Global().get('shapePoints', []))
     }
 
     static loadInputVariable = document.querySelector('#file-uploader')
@@ -26,6 +28,21 @@ export default class CanvasShapeEditor extends GameObject {
     get loadInput() {
         this.loadInputInit()
         return CanvasShapeEditor.loadInputVariable
+    }
+
+    resetHistory() {
+        this.undoHistory.length = 0
+        this.redoHistory.length = 0
+    }
+
+    loadHistory(points) {
+        this.resetHistory()
+
+        for (const point of points) {
+            this.undoHistory.push(new AddPointCommand(this.path.shape, point))
+        }
+
+        this.path.savePoints()
     }
     
     loadInputInit() {
@@ -38,6 +55,7 @@ export default class CanvasShapeEditor extends GameObject {
 
             const url = URL.createObjectURL(file)
             this.path.shape.loadFromJSON(url)
+                .then(() => this.loadHistory(this.path.shape.shapePoints))
         })
     }
 
@@ -78,6 +96,8 @@ export default class CanvasShapeEditor extends GameObject {
             global.set(name, value)
         }
         this.updateTextForCounters(this.subObjects.counter)
+        this.resetHistory()
+        global.set('undoHistory', [])
     }
 
     resetPath(global = new Global) {
@@ -347,7 +367,7 @@ export default class CanvasShapeEditor extends GameObject {
 
         this.keyboardManager.addKey('KeyF', e => {
             this.toggleFill()
-        }, {ctrlKey: true, isPreventDefault: true})
+        })
 
         this.keyboardManager.addKey('KeyS', e => {
             this.downloadJSON()

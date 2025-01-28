@@ -16,7 +16,7 @@
 
 ### Hot-keys
 
-- `Ctrl-F` -> `Toggle Fill Mode`
+- `F` -> `Toggle Fill Mode`
 - `Ctrl-S` -> `Save shape as JSON`
 - `Ctrl-C` -> `Copy shape in clipboard`
 - `R` -> `Reset`
