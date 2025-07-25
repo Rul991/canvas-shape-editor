@@ -1,6 +1,8 @@
 # Canvas Shape Editor
 
-> CanvasShape editor in *rul2d*
+> **CanvasShape/RelativeShape editor for *rul2d***
+>
+> > ![Screenshot](readme/screen.png)
 
 ## Installation
 

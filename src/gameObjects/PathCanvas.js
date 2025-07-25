@@ -1,16 +1,13 @@
-import CanvasShape from "../rul2d/js/CanvasShape.js"
-import ClickableObject from "../rul2d/js/ClickableObject.js"
-import GameObject from "../rul2d/js/GameObject.js"
-import KeyboardEventManager from "../rul2d/js/KeyboardEventManager.js"
-import Point from "../rul2d/js/Point.js"
-import { hsla } from "../rul2d/js/utils/colorWork.js"
-import Vector2 from "../rul2d/js/Vector2.js"
-import AddPointCommand from "./AddPointCommand.js"
-import Command from "./Command.js"
-import DeletePointCommand from "./DeletePointCommand.js"
-import EditPointCommand from "./EditPointCommand.js"
-import Global from "./Global.js"
-import Grid from "./GridObject.js"
+import CanvasShape from '../rul2d/js/CanvasShape.js';
+import ClickableObject from '../rul2d/js/ClickableObject.js';
+import GameObject from '../rul2d/js/GameObject.js';
+import Point from '../rul2d/js/Point.js';
+import AddPointCommand from './AddPointCommand.js';
+import Command from './Command.js';
+import DeletePointCommand from './DeletePointCommand.js';
+import EditPointCommand from './EditPointCommand.js';
+import Global from './Global.js';
+import Grid from './GridObject.js';
 
 export default class PathCanvas extends GameObject {
     constructor(x, y) {
@@ -134,9 +131,6 @@ export default class PathCanvas extends GameObject {
     addCommand(command = new Command) {
         command.execute()
         this.undoHistory.push(command)
-
-        let global = new Global
-        global.set('undoHistory', this.undoHistory)
     }
 
     addPoint(point = new Point){
